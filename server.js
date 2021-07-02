@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt-nodejs');
 const cors = require('cors');
 const knex = require('knex');
 const morgan = require('morgan');
+require('dotenv').config()
 
 const register = require('./controllers/register');
 const signin = require('./controllers/signin');

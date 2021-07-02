@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+    #Backend API
+    smart-brain-api:                            #name of service
+        container_name: backend
+        #image: node:16-alpine3.11 commented out since done in Dockerfile
+        build: ./                               #tells dockercompose to file Dockerfile (build file) in current path
+        command: npm start                      #runs npm start on container startup
+        working_dir: /usr/src/smart-brain-api   #define working directory for app
+        environment: 
+            POSTGRES_URI: ${POSTGRES_URI}
+            REDIS_URI: redis://redis:6379
+        ports:
+            - "3000:3000"                       #define port for application
+        volumes:
+            - ./:/usr/src/smart-brain-api       #associates containers specified dir to local machine specified dir (local dir:container dir) allows Nodemon to work
+    # Postgres
+    postgres:
+        #image: postgres
+        build: ./postgres
+        environment: 
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: smart-brain-docker
+            POSTGRES_HOST: postgres
+        ports:
+            - "5432:5432"
+    # Redis
+    redis:
+        image: redis
+        ports:
+            - "6379:6379"
+        
